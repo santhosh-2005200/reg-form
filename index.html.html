@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Data Entry System</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 40px;
+      /* Background Gradient */
+      background: linear-gradient(to right, #e0f2fe, #f9fafb, #ede9fe);
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 5px;
+      color: #111827;
+    }
+
+    p {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 30px;
+      color: #374151;
+    }
+
+    .container {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      flex: 1;
+      min-width: 320px;
+      max-width: 450px;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 5px;
+      color: #1f2937;
+    }
+
+    .card p {
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 6px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: #2563eb;
+      outline: none;
+      box-shadow: 0 0 4px rgba(37, 99, 235, 0.4);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(to right, #1e3a8a, #2563eb);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #2563eb;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background: #f9fafb;
+    }
+
+    .placeholder {
+      text-align: center;
+      padding: 40px 0;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Live Data Entry System</h1>
+  <p>Enter your information below and watch it appear instantly in the table. No page refresh required!</p>
+
+  <div class="container">
+    <!-- Form Card -->
+    <div class="card">
+      <h2>Data Entry Form</h2>
+      <p>Fill out the form below to add new entries to the table</p>
+      <form id="userForm">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="Enter your full name" required>
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="Enter your email address" required>
+
+        <label for="department">Department</label>
+        <input type="text" id="department" placeholder="Enter your department" required>
+
+        <button type="submit">Add to Table</button>
+      </form>
+    </div>
+
+    <!-- Table Card -->
+    <div class="card">
+      <h2>Data Table</h2>
+      <div id="placeholder" class="placeholder">
+        <div style="font-size:40px; color:#9ca3af;">●</div>
+        <p><strong>No entries yet</strong></p>
+        <p>Fill out the form above to see your data appear here</p>
+      </div>
+      <table id="dataTable" style="display:none;">
+        <thead>
+          <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Department</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("userForm");
+    const table = document.getElementById("dataTable");
+    const tbody = table.querySelector("tbody");
+    const placeholder = document.getElementById("placeholder");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const department = document.getElementById("department").value.trim();
+
+      if (!name || !email || !department) {
+        alert("All fields are required!");
+        return;
+      }
+
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,}$/;
+      if (!emailPattern.test(email)) {
+        alert("Invalid email address.");
+        return;
+      }
+
+      const newRow = document.createElement("tr");
+      newRow.innerHTML = `
+        <td>${name}</td>
+        <td>${email}</td>
+        <td>${department}</td>
+      `;
+      tbody.appendChild(newRow);
+
+      placeholder.style.display = "none";
+      table.style.display = "table";
+      form.reset();
+    });
+  </script>
+
+</body>
+</html>
+
+
+
